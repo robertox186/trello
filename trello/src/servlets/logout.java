@@ -37,8 +37,14 @@ public class logout extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session=request.getSession();
+		if(session!=null || request.isRequestedSessionIdValid()){
 		session.invalidate();
+		
 		response.getWriter().print("logout exitoso");
+		}else{
+			response.getWriter().print("no hay session iniciada");
+			
+		}
 	}
 
 }

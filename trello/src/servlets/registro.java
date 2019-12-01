@@ -52,6 +52,7 @@ public class registro extends HttpServlet {
 		
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <register> resp=new Respuesta <register>();
+		if(session==null || !entrada.isRequestedSessionIdValid()){
 		register register=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),register.class);
 			resp.setData(register);
 			String pass= cripto.getPass(register.getPassword());
@@ -73,6 +74,10 @@ public class registro extends HttpServlet {
 	
 	
 	pm.getCon(con);
+		}else{
+			resp.setMessage("ya hay una session iniciada");
+			resp.setStatus(340);
+		}
 	String sr=om.writeValueAsString(resp);
 	
 	response.getWriter().print(sr);

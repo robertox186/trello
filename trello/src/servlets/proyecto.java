@@ -56,6 +56,7 @@ public class proyecto extends HttpServlet {
 		projects crud=new projects();
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <project> resp=new Respuesta <project>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		project project=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),project.class);
 			resp.setData(project);
 			poolManager pm=new poolManager();
@@ -86,6 +87,11 @@ public class proyecto extends HttpServlet {
 				resp.setStatus(400);
 			}
 			pm.getCon(con);
+		}else{
+			
+			resp.setMessage("no hay session iniciada");
+			resp.setStatus(300);
+		}
 			String sr=om.writeValueAsString(resp);
 			
 			response.getWriter().print(sr);
@@ -99,6 +105,7 @@ HttpSession session = entrada.getSession();
 		projects crud=new projects();
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <project> resp=new Respuesta <project>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		project project=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),project.class);
 			resp.setData(project);
 		poolManager pm=new poolManager();
@@ -114,6 +121,11 @@ HttpSession session = entrada.getSession();
 			resp.setStatus(400);
 		}
 		pm.getCon(con);
+		}else{
+			
+			resp.setMessage("no hay session iniciada");
+			resp.setStatus(300);
+		}
 		String sr=om.writeValueAsString(resp);
 		
 		response.getWriter().print(sr);

@@ -52,6 +52,7 @@ HttpSession session = entrada.getSession();
 		tarjetas crud=new tarjetas();
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <tarjeta> resp=new Respuesta <tarjeta>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		tarjeta tarjeta=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),tarjeta.class);
 			resp.setData(tarjeta);
 			poolManager pm=new poolManager();
@@ -68,7 +69,11 @@ HttpSession session = entrada.getSession();
 				resp.setStatus(400);;
 			}
 			pm.getCon(con);
-
+		}else{
+			resp.setMessage("no hay session iniciada");
+			resp.setStatus(300);
+			
+		}
 			String sr=om.writeValueAsString(resp);
 			
 			response.getWriter().print(sr);
@@ -81,6 +86,7 @@ HttpSession session = entrada.getSession();
 		 tarjetas crud=new tarjetas();
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <tarjeta> resp=new Respuesta <tarjeta>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		tarjeta tarjeta=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),tarjeta.class);
 			resp.setData(tarjeta);
 			poolManager pm=new poolManager();
@@ -96,6 +102,11 @@ HttpSession session = entrada.getSession();
 				resp.setStatus(400);
 			}
 			pm.getCon(con);
+		}else{
+			
+			resp.setMessage("no hay session iniciada");
+			resp.setStatus(300);
+		}
 String sr=om.writeValueAsString(resp);
 			
 			response.getWriter().print(sr);
@@ -106,6 +117,7 @@ HttpSession session = entrada.getSession();
 		 tarjetas crud=new tarjetas();
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <tarjeta> resp=new Respuesta <tarjeta>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		tarjeta tarjeta=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),tarjeta.class);
 			resp.setData(tarjeta);
 			poolManager pm=new poolManager();
@@ -120,6 +132,12 @@ HttpSession session = entrada.getSession();
 			    resp.setStatus(400);
 			}
 			pm.getCon(con);
+		}else{
+			
+			resp.setMessage("no hay una session iniciada");
+			resp.setStatus(300);
+			
+		}
 			String sr=om.writeValueAsString(resp);
 			
 			response.getWriter().print(sr);

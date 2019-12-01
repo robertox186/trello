@@ -54,6 +54,7 @@ public class login extends HttpServlet {
 		
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <user> resp=new Respuesta <user>();
+		if(session==null || !entrada.isRequestedSessionIdValid()){
 		user user=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),user.class);
 			resp.setData(user);
 			users crud =new users();
@@ -85,6 +86,12 @@ public class login extends HttpServlet {
 			}
 			
 			pm.getCon(con);
+		}else{
+			
+			resp.setMessage("ya hay una session iniciada");
+					resp.setStatus(340);
+			
+		}
 			String sr=om.writeValueAsString(resp);
 			
 			response.getWriter().print(sr);

@@ -54,6 +54,7 @@ HttpSession session = entrada.getSession();
 	
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <comentario> resp=new Respuesta <comentario>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		comentario comentario=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),comentario.class);
 			resp.setData(comentario);
 			poolManager pm=new poolManager();
@@ -73,6 +74,11 @@ HttpSession session = entrada.getSession();
 			resp.setStatus(400);
 		}
 		pm.getCon(con);
+		}else{
+			
+			resp.setMessage("no hay una session iniciada");
+			resp.setStatus(300);
+		}
 		String sr=om.writeValueAsString(resp);
 		
 		response.getWriter().print(sr);

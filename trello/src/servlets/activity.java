@@ -51,13 +51,14 @@ public class activity extends HttpServlet {
 	protected void doPost(HttpServletRequest entrada, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 HttpSession session = entrada.getSession();
-		
+ObjectMapper om=new ObjectMapper();
+		Respuesta <actividades> resp=new Respuesta <actividades>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		poolManager pm=new poolManager();
 		Connection con=null;
 		
 		actividad crud=new actividad();
-		ObjectMapper om=new ObjectMapper();
-		Respuesta <actividades> resp=new Respuesta <actividades>();
+		
 		actividades actividad=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),actividades.class);
 			
 			con=pm.setCon();
@@ -85,8 +86,20 @@ HttpSession session = entrada.getSession();
 			
 		}
 		pm.getCon(con);
-		String sr=om.writeValueAsString(resp);	
+		
+		}
+		else{
+		resp.setMessage("no hay session iniciada");
+		resp.setStatus(300);
+		}
+		String sr=om.writeValueAsString(resp);
+		
+		
+		
 		response.getWriter().print(sr);
+		
+		
+		
 	}
 
 	
@@ -99,6 +112,7 @@ HttpSession session = entrada.getSession();
 		actividad crud=new actividad();
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <ArrayList> resp=new Respuesta <ArrayList>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		actividades actividad=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),actividades.class);
 			con=pm.setCon();
 		ResultSet rs=crud.select(actividad.getId_tarjeta(),con);
@@ -135,6 +149,10 @@ HttpSession session = entrada.getSession();
 		}
 		
 		pm.getCon(con);
+		}else{
+			resp.setMessage("no hay session iniciada");
+			resp.setStatus(300);
+		}
 		String sr=om.writeValueAsString(resp);	
 		response.getWriter().print(sr);
 	}

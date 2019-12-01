@@ -55,6 +55,7 @@ public class list extends HttpServlet {
 		
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <lista> resp=new Respuesta <lista>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		lista lista=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),lista.class);
 			resp.setData(lista);
 			listas crud =new listas();
@@ -80,6 +81,11 @@ public class list extends HttpServlet {
 			}
 
 pm.getCon(con);	
+		}else{
+			
+resp.setMessage("no hay session iniciada");
+resp.setStatus(300);
+		}
 String sr=om.writeValueAsString(resp);
 			
 			response.getWriter().print(sr);
@@ -95,6 +101,7 @@ protected void doPut(HttpServletRequest entrada, HttpServletResponse response) t
 	
 	ObjectMapper om=new ObjectMapper();
 	Respuesta <ArrayList> resp=new Respuesta <ArrayList>();
+	if(session!=null || entrada.isRequestedSessionIdValid()){
 	lista lista=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),lista.class);
 		
 		listas crud =new listas();
@@ -133,6 +140,11 @@ protected void doPut(HttpServletRequest entrada, HttpServletResponse response) t
 		resp.setStatus(404);
 	}
 	pm.getCon(con);
+	}else{
+		
+		resp.setMessage("no hay session iniciada");
+		resp.setStatus(300);
+	}
 	
 	String sr=om.writeValueAsString(resp);
 	

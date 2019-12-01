@@ -58,6 +58,7 @@ HttpSession session = entrada.getSession();
 		tarjetas crud=new tarjetas();
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <tarjeta> resp=new Respuesta <tarjeta>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		tarjeta tarjeta=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),tarjeta.class);
 			resp.setData(tarjeta);	
 			con=pm.setCon();
@@ -83,6 +84,12 @@ HttpSession session = entrada.getSession();
 				
 			}
 			pm.getCon(con);
+		}else{
+			
+			resp.setStatus(300);
+			resp.setMessage("no hay session iniciada");
+			
+		}
 			String sr=om.writeValueAsString(resp);
 			
 			response.getWriter().print(sr);

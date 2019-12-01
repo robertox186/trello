@@ -53,6 +53,7 @@ HttpSession session = entrada.getSession();
 		listas crud=new listas();
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <lista> resp=new Respuesta <lista>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		lista lista=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),lista.class);
 			resp.setData(lista);
 			
@@ -69,6 +70,12 @@ HttpSession session = entrada.getSession();
 	             resp.setStatus(400);			
 			}
 			pm.getCon(con);
+		}else{
+			
+			resp.setMessage("no hay una session iniciada");
+			resp.setStatus(300);
+			
+		}
 			String sr=om.writeValueAsString(resp);
 			
 			response.getWriter().print(sr);
@@ -80,6 +87,7 @@ HttpSession session = entrada.getSession();
 		listas crud=new listas();
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <lista> resp=new Respuesta <lista>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		lista lista=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),lista.class);
 			resp.setData(lista);
 			
@@ -96,6 +104,11 @@ HttpSession session = entrada.getSession();
 			     resp.setStatus(400);
 			}
 			pm.getCon(con);
+		}else{
+			
+			resp.setMessage("no hay una session iniciada");
+			resp.setStatus(300);
+		}
 String sr=om.writeValueAsString(resp);
 			
 			response.getWriter().print(sr);

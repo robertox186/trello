@@ -53,6 +53,7 @@ public class group extends HttpServlet {
 		HttpSession session = entrada.getSession();
 		ObjectMapper om=new ObjectMapper();
 		Respuesta <grupo> resp=new Respuesta <grupo>();
+		if(session!=null || entrada.isRequestedSessionIdValid()){
 		grupo grupo=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),grupo.class);
 			resp.setData(grupo);
 			grupos crud=new grupos();
@@ -69,6 +70,11 @@ public class group extends HttpServlet {
 				
 			}
 			pm.getCon(con);
+		}else{
+			
+			resp.setMessage("no hay session iniciada");
+			resp.setStatus(300);
+		}
 			String sr=om.writeValueAsString(resp);
 			
 			response.getWriter().print(sr);
@@ -82,6 +88,7 @@ public class group extends HttpServlet {
 				ArrayList p=new ArrayList();
 				ObjectMapper om=new ObjectMapper();
 				Respuesta <ArrayList> resp=new Respuesta <ArrayList>();
+				if(session!=null || entrada.isRequestedSessionIdValid()){
 				grupo grupo=om.readValue(entrada.getReader().lines().collect(Collectors.joining(System.lineSeparator())),grupo.class);
 					
 					grupos crud=new grupos();
@@ -110,6 +117,11 @@ public class group extends HttpServlet {
 						
 					}
 					pm.getCon(con);
+				}else{
+					
+					resp.setMessage("no hay session iniciada");
+					resp.setStatus(300);
+				}
 					String sr=om.writeValueAsString(resp);
 					
 					response.getWriter().print(sr);
